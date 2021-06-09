@@ -1,15 +1,20 @@
 import styled from "styled-components";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles,  createStyles } from "@material-ui/core/styles";
+
+
 
 const drawerWidth = 300;
+
+
 
 export const Container = styled.div`
   /* position: absolute;
   z-index: 0; */
+
   h1 {
     font-size: 18px;
     font-weight: lighter;
-    color: #222
+    color: #ddd
   }
 `;
 
@@ -33,8 +38,9 @@ export const useStyles = makeStyles((theme) =>
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
       },
-      background: '#fafafa',
-      boxShadow: "0 5px 5px -3px rgba(0,0,0,0.14)",
+      
+      background: '#000',
+      boxShadow: "0 5px 5px 2px rgba(0,0,0,0.25)",
       textTransform: "capitalize",
     },
     menuButton: {
@@ -44,7 +50,13 @@ export const useStyles = makeStyles((theme) =>
       },
     },
     avatar: {
-      background: "#692177",
+      background: "#ee2737",
     },
+    text: {
+      color: '#ddd',
+    },
+    menu: {
+      background: '#222'
+    }
   })
 );

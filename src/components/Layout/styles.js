@@ -17,7 +17,8 @@ export const useStyles = makeStyles((theme) =>
       },
     },
     drawerPaper: {
-      boxShadow: "5px 0 5px -5px rgba(0,0,0,0.14)",
+      boxShadow: "5px 0 5px 2px rgba(0,0,0,0.25)",
+      border: 'none',
       width: drawerWidth,
     },
   })

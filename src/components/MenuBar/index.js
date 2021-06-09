@@ -17,9 +17,11 @@ import { FaSyringe } from "react-icons/fa";
 import PersonIcon from '@material-ui/icons/Person';
 
 
-import { Container, Logo, Image, StyledLink, useStyles } from "./styles";
+import { Container, Logo, Image, StyledLink, Background, useStyles } from "./styles";
 
-import logo from "../../assets/logo-vacinas_reduzido.png";
+import logo from "../../assets/lol.png";
+import background from "../../assets/background.png";
+import './index.css'
 
 // import { NavLink } from "react-router-dom";
 
@@ -58,13 +60,16 @@ const MenuBar = () => {
 
   return (
     <Container>
+    <Background src={background} alt="" />
       <Logo className={classes.toolbar}>
         <Image src={logo} alt="provem-logo" />
+        LOL PREDICT
       </Logo>
+      
 
       <Divider />
 
-      <List style={{ padding: 0 }} aria-labelledby="nested-list-subheader">
+      <List style={{ padding: 0, zIndex: 10 }} aria-labelledby="nested-list-subheader">
         {list.map((item, index) => (
           <div key={index}>
             {/* <ListItem

@@ -3,31 +3,55 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { NavLink } from "react-router-dom";
 
 export const Container = styled.div`
+  font-size: 18px;
+  color: #ddd;
+  font-family: "Poppins";
+
+  height: 100%;
+  background: #000;
 
   h1 {
     color: #222;
   }
 `;
+
+export const Background = styled.img`
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 5;
+  opacity: 0.2;
+  position: absolute;
+  object-fit: cover;
+`;
+
 export const Logo = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   color: "#fff";
-  
+  padding-left: 25px;
 `;
 
 export const Image = styled.img`
-  width: 80%;
-  height: 65px;
-  padding: 20px 0
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
 `;
 
 export const StyledLink = styled(NavLink)`
-  color: #111;
+  z-index: 7;
+  font-size: 16px;
+  color: #ddd;
   display: flex;
-  padding: 8px 30px;
+  padding: 8px;
   transition: 0.2s;
   text-decoration: none;
+  margin: 20px;
+  border-radius: 2.5px;
+
   i {
     display: flex;
     justify-content: center;
@@ -35,26 +59,26 @@ export const StyledLink = styled(NavLink)`
     padding-right: 30px;
   }
   &:hover {
-    transition: 0.2s;
-    background: rgba(0, 0, 0, 0.04);
-    color: #692177;
+    background: rgba(	238, 39, 55, 0.85);
+
+    color: #ddd;
     i {
-      transition: 0.2s;
-      color: #692177;
+      color: #ddd;
     }
+    transition: all 0.2s;
   }
   &:focus {
-    border-right: 4px solid #692177;
-    transition: border-right 0.1s;
+    background: #ee2737;
+    color: #ddd;
+    transition: all 0.2s;
   }
   &.active {
-    color: #692177;
-    transition: border-right 0.2s;
-    border-right: 4px solid #692177;
-    background: rgba(0, 0, 0, 0.04);
+    background: #ee2737;
+    color: #ddd;
     i {
-      color: #692177;
+      color: #ddd;
     }
+    transition: all 0.2s;
   }
 `;
 
@@ -66,5 +90,8 @@ export const useStyles = makeStyles((theme) =>
     nested: {
       paddingLeft: theme.spacing(4),
     },
+    drawer: {
+      border: 'none'
+    }
   })
 );
