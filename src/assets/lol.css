@@ -2287,7 +2287,7 @@ img {
     }
     .RewardsDrops .no-drops.left {
         position: absolute;
-        transform: rotate(-8deg);
+      
         margin: 50px 0 0 -50px;
     }
     .RewardsDrops .no-drops.left .title {
@@ -2295,7 +2295,7 @@ img {
     }
     .RewardsDrops .no-drops.right {
         position: absolute;
-        transform: rotate(2deg);
+      
         margin: 50px 0 0 50px;
     }
     .RewardsDrops .no-drops.right .title {
@@ -3303,7 +3303,7 @@ img {
         width: 24px;
     }
     .Accordion .accordion-title .chevron.down .icon {
-        transform: rotate(90deg)
+
     }
     .Accordion .accordion-title .chevron .shape {
         fill: #8fa3b0
@@ -3489,7 +3489,7 @@ img {
 }
 
 .Event .today-button.scroll-down .icon {
-    transform: rotate(180deg)
+
 }
 
 @media (max-width:1075px) {
@@ -6185,13 +6185,13 @@ img {
         top: -3%;
         left: -7.5%;
         z-index: 1;
-        transform: rotate(10deg) scale(1.3);
+
         overflow: hidden;
     }
     .HomeVodsMatch .thumbnail .background .image-wrapper:first-child .team-image {
         top: 0;
         left: 9%;
-        transform: rotate(-10deg) scale(.77)
+
     }
     .HomeVodsMatch .thumbnail .background .image-wrapper:last-child {
         right: 0;
@@ -7116,7 +7116,7 @@ img {
 
 .InformPassCelebration .modal .content .confetti-piece:nth-child(1) {
     left: 13%;
-    transform: rotate(-33deg);
+
     animation: makeItRain 2000ms infinite ease-out;
     animation-delay: 273ms;
     animation-duration: 1965ms
@@ -7124,48 +7124,44 @@ img {
 
 .InformPassCelebration .modal .content .confetti-piece:nth-child(2) {
     left: 26%;
-    transform: rotate(-7deg);
-    animation: makeItRain 2000ms infinite ease-out;
+
     animation-delay: 363ms;
     animation-duration: 1519ms
 }
 
 .InformPassCelebration .modal .content .confetti-piece:nth-child(3) {
     left: 39%;
-    transform: rotate(48deg);
-    animation: makeItRain 2000ms infinite ease-out;
+
     animation-delay: 292ms;
     animation-duration: 2398ms
 }
 
 .InformPassCelebration .modal .content .confetti-piece:nth-child(4) {
     left: 52%;
-    transform: rotate(45deg);
-    animation: makeItRain 2000ms infinite ease-out;
+
+
     animation-delay: 494ms;
     animation-duration: 1415ms
 }
 
 .InformPassCelebration .modal .content .confetti-piece:nth-child(5) {
     left: 65%;
-    transform: rotate(50deg);
-    animation: makeItRain 2000ms infinite ease-out;
+
     animation-delay: 95ms;
     animation-duration: 1500ms
 }
 
 .InformPassCelebration .modal .content .confetti-piece:nth-child(6) {
     left: 78%;
-    transform: rotate(-27deg);
-    animation: makeItRain 2000ms infinite ease-out;
+
+
     animation-delay: 454ms;
     animation-duration: 2095ms
 }
 
 .InformPassCelebration .modal .content .confetti-piece:nth-child(7) {
     left: 91%;
-    transform: rotate(44deg);
-    animation: makeItRain 2000ms infinite ease-out;
+
     animation-delay: 302ms;
     animation-duration: 1491ms
 }
@@ -9302,7 +9298,7 @@ img {
         min-height: 320px;
     }
     .RewardsDropsCard .card.overlay {
-        transform: rotate(-3deg);
+
         pointer-events: none;
         cursor: default;
         box-shadow: 0 0 40px #000
@@ -9366,7 +9362,7 @@ img {
         min-height: auto;
     }
     .RewardsDropsCard .card.overlay {
-        transform: rotate(-3deg) scale(.9)
+       
     }
     .RewardsDropsCard .title.long {
         font-size: 16px
