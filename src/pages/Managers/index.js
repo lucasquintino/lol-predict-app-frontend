@@ -3,6 +3,7 @@ import { useStyles, Container, Header, Body } from "./styles";
 import Layout from "../../components/Layout";
 import Table from "../../components/Table";
 import "../../assets/extra.css?v=1.9.0";
+import "../../assets/lol.css?v=1.9.0";
 
 import { Month, Week } from "./utils";
 import api from "../../api";
@@ -35,7 +36,6 @@ const Managers = () => {
         );
       };
       data = data.groupBy("day");
-      console.log(data);
       setMatches(data);
     }
     fetchData();
@@ -51,7 +51,6 @@ const Managers = () => {
             {matches.map((item) => (
               <div style={{ marginBottom: "75px" }}>
                 <Header color="rose">
-                  {console.log(item)}
                   <h1 className={classes.cardTitleWhite}>
                     {Week[item[0].week]}
                   </h1>

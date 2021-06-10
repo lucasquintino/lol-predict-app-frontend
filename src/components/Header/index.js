@@ -43,6 +43,7 @@ export const StyledMenu = withStyles({
 export const StyledMenuItem = withStyles((theme) => ({
   root: {
     color: '#ccc',
+    fontSize: 16,
     "&:focus": {
       backgroundColor: '#000',
       "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
@@ -81,9 +82,9 @@ const Header = ({ handleDrawerToggle }) => {
 
           <Profile onClick={handleClick}>
             <Avatar className={classes.avatar}>A</Avatar>
-            <Typography className={classes.text} noWrap>
+            <h1 className={classes.text} noWrap>
               Admin
-            </Typography>
+            </h1>
             {Boolean(anchorEl) ? (
               <ExpandLess style={{ color: "white" }} />
             ) : (

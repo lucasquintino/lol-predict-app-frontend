@@ -32,18 +32,18 @@ export const Logo = styled.div`
   justify-content: flex-start;
   align-items: center;
   color: "#fff";
-  padding-left: 25px;
+  padding-left: 18px;
 `;
 
 export const Image = styled.img`
   width: 50px;
   height: 50px;
-  margin-right: 10px;
+  margin-right: 15px;
 `;
 
 export const StyledLink = styled(NavLink)`
   z-index: 7;
-  font-size: 16px;
+  font-size: 22px;
   color: #ddd;
   display: flex;
   padding: 8px;

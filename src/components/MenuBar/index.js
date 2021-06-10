@@ -7,46 +7,39 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-
 // Icones da navegação
 
 import Geral from "@material-ui/icons/Dashboard";
 import Evento from "@material-ui/icons/LocalActivity";
-import KitchenIcon from '@material-ui/icons/Kitchen';
-import { FaSyringe } from "react-icons/fa";
-import PersonIcon from '@material-ui/icons/Person';
+import LiveTv from "@material-ui/icons/LiveTv";
+import CalendarToday from "@material-ui/icons/CalendarToday";
 
-
-import { Container, Logo, Image, StyledLink, Background, useStyles } from "./styles";
+import {
+  Container,
+  Logo,
+  Image,
+  StyledLink,
+  Background,
+  useStyles,
+} from "./styles";
 
 import logo from "../../assets/lol.png";
 import background from "../../assets/background.png";
-import './index.css'
+import "./index.css";
 
 // import { NavLink } from "react-router-dom";
 
 const list = [
-  // {
-  //   name: "dados gerais",
-  //   route: "/dashboard",
-  //   icon: <Geral style={{width: 25, height: 25}}/>,
-  // },
- 
   {
-    name: "vacinas",
-    route: "/vaccines",
-    icon: <FaSyringe style={{width: 25, height: 25}}/>,
+    name: "Horários",
+    route: "/schedule",
+    icon: <CalendarToday style={{ width: 25, height: 25 }} />,
   },
   {
-    name: "gestores",
-    route: "/managers",
-    icon: <PersonIcon style={{width: 25, height: 25}}/>,
+    name: "Ao Vivo",
+    route: "/live",
+    icon: <LiveTv style={{ width: 25, height: 25 }} />,
   },
-  {
-    name: "freezers",
-    route: "/freezers",
-    icon: <KitchenIcon style={{width: 25, height: 25}}/>,
-  }
 ];
 
 const MenuBar = () => {
@@ -60,16 +53,18 @@ const MenuBar = () => {
 
   return (
     <Container>
-    <Background src={background} alt="" />
+      <Background src={background} alt="" />
       <Logo className={classes.toolbar}>
         <Image src={logo} alt="provem-logo" />
         LOL PREDICT
       </Logo>
-      
 
-      <Divider />
+      <Divider style={{ background: "#aaa", margin: '0px 20px' }} />
 
-      <List style={{ padding: 0, zIndex: 10 }} aria-labelledby="nested-list-subheader">
+      <List
+        style={{ padding: 0, zIndex: 10 }}
+        aria-labelledby="nested-list-subheader"
+      >
         {list.map((item, index) => (
           <div key={index}>
             {/* <ListItem
@@ -87,7 +82,7 @@ const MenuBar = () => {
             </ListItem> */}
             <StyledLink key={index} onClick={() => {}} to={item.route}>
               <i>{item.icon} </i>
-              <ListItemText primary={item.name} />
+              <h1 style={{ fontSize: 18, color: "#ddd" }}>{item.name}</h1>
             </StyledLink>
 
             {/* <Collapse in={open === index} timeout="auto" unmountOnExit>

@@ -51,12 +51,15 @@ export const useStyles = makeStyles((theme) =>
     },
     avatar: {
       background: "#ee2737",
+      fontSize: 22
     },
     text: {
       color: '#ddd',
     },
     menu: {
-      background: '#222'
+      background: '#222',
+      fontSize: 22
+
     }
   })
 );

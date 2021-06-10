@@ -5,9 +5,9 @@ export const Header = styled.div`
   color: #fff;
   height: 100px;
   display: flex;
-  background: #000;
+  background: #ee2737;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   margin: 0 15px;
   position: relative;
