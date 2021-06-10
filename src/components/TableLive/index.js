@@ -18,6 +18,13 @@ import axios from "axios";
 import api from "../..//api";
 import styles from "./tableStyle.js";
 
+const api2 = axios.create({
+  baseURL: "https:feed.lolesports.com/livestats/v1/window",
+});
+
+
+
+
 const useStyles = makeStyles(styles);
 
 var LvlToXp = new Array();
@@ -87,8 +94,9 @@ console.log('oi')
       setBlue(0);
       setRed(0);
       if (gameId) {
-        const result = await axios.get(
-          `https:feed.lolesports.com/livestats/v1/window/${gameId}`
+
+        const result = await api2.get(
+          `/${gameId}`
         );
         var blueTeam = result.data.gameMetadata.blueTeamMetadata.esportsTeamId;
         var redTeam = result.data.gameMetadata.redTeamMetadata.esportsTeamId;
@@ -127,8 +135,8 @@ console.log('oi')
         var btotalCs = 0;
         var rtotalXp = 0;
         var rtotalCs = 0;
-        const res = await axios.get(
-          `https:feed.lolesports.com/livestats/v1/window/${gameId}?startingTime=${date.toISOString()}`
+        const res = await api2.get(
+          `/${gameId}?startingTime=${date.toISOString()}`
         );
         console.log(res);
         if (typeof res.data.frames === "undefined")
@@ -209,8 +217,8 @@ console.log('oi')
           time.setSeconds(0);
           time.setMinutes(minutes);
 
-          const res15 = await axios.get(
-            `https:feed.lolesports.com/livestats/v1/window/${
+          const res15 = await api2.get(
+            `/${
               res.data.esportsGameId
             }?startingTime=${time.toISOString()}`
           );
