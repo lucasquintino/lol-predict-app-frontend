@@ -19,7 +19,7 @@ import api from "../..//api";
 import styles from "./tableStyle.js";
 
 const api2 = axios.create({
-  baseURL: "https:feed.lolesports.com/livestats/v1/window",
+  baseURL: "https://feed.lolesports.com/livestats/v1/window",
 });
 
 
