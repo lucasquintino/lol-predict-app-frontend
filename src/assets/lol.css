@@ -905,7 +905,7 @@ img {
         align-items: center;
         justify-content: center;
         position: relative;
-        transform: translateY(-50%);
+        
     }
     .GlobalPartners .tournament-bugs .bug {
         width: 60px;
@@ -5038,7 +5038,7 @@ img {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);
+        
         z-index: 2;
         cursor: pointer
     }
@@ -5542,7 +5542,7 @@ img {
         position: absolute;
         top: 50%;
         right: 0;
-        transform: translateY(-50%);
+        
         cursor: pointer;
         height: 48px;
         width: 48px;
@@ -5644,7 +5644,7 @@ img {
     .HomeLeagueFilter .content {
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        
         border: 1px solid #252c32;
         width: calc(((100% - 442px) / 12) * 8 + 238px);
     }
@@ -5680,7 +5680,7 @@ img {
     .HomeLeagueFilter .content {
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        
         border: 1px solid #252c32;
         width: calc(((100% - 442px) / 12) * 10 + 306px);
     }
@@ -5757,7 +5757,7 @@ img {
         position: absolute;
         right: 15px;
         top: 50%;
-        transform: translateY(-50%);
+        
         width: 40px;
         height: 24px;
         background-color: #687077;
@@ -5934,7 +5934,7 @@ img {
         position: absolute;
         bottom: 20px;
         left: 50%;
-        transform: translateX(-50%)
+        
     }
 }
 
@@ -5974,7 +5974,7 @@ img {
         position: absolute;
         bottom: 20px;
         left: 50%;
-        transform: translateX(-50%)
+        
     }
 }
 
@@ -6148,7 +6148,7 @@ img {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);
+        
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -6390,7 +6390,7 @@ img {
     .InformBubble {
         left: 50%;
         bottom: 30px;
-        transform: translateX(-50%);
+        ;
         padding: 11px 11px 10px
     }
 }
@@ -6426,7 +6426,7 @@ img {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+     translateY(-50%);
     background-color: #0f1519;
     padding: 50px 50px 40px 50px;
     display: flex;
@@ -7007,7 +7007,7 @@ img {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    
 }
 
 .InformPassAvailability .modal .content .info {
@@ -7102,7 +7102,7 @@ img {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+     translateY(-50%);
 }
 
 .InformPassCelebration .modal .content .confetti-piece {
@@ -7415,7 +7415,7 @@ img {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+     translateY(-50%);
     background-color: #0f1519;
     display: flex;
     flex-direction: column;
@@ -7651,7 +7651,7 @@ img {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+     translateY(-50%);
 }
 
 .InformTeamPassSelector .modal .content .info {
@@ -7941,7 +7941,7 @@ img {
     }
     .InformTooltip.center {
         left: 50%;
-        transform: translateX(-50%)
+        
     }
     .InformTooltip.right {
         right: 0
@@ -7958,7 +7958,7 @@ img {
     }
     .InformTooltip.center {
         left: 50%;
-        transform: translateX(-50%)
+        
     }
     .InformTooltip.right {
         right: 0
@@ -8018,7 +8018,7 @@ img {
         position: absolute;
         top: 50%;
         right: 0;
-        transform: translateY(-50%);
+        
         cursor: pointer;
         height: 48px;
         width: 48px;
@@ -8808,7 +8808,7 @@ img {
     .RewardsBanner .personal-text {
         padding-top: 51px;
         left: 50%;
-        transform: translateX(-50%);
+        ;
         text-align: center
     }
     .RewardsBanner .stats {
@@ -9329,7 +9329,6 @@ img {
         float: right;
         line-height: 14px;
         bottom: 84px;
-        transform: translate(-50%, 0);
     }
     .RewardsDropsCard .unlocked-date {
         font-weight: bold;
@@ -10546,7 +10545,7 @@ img {
         max-width: 274px;
         position: relative;
         left: 50%;
-        transform: translateX(-50%)
+        
     }
 }
 
@@ -11655,7 +11654,7 @@ img {
     .StandingsBracketStandard .outer-grouping .grouping .previous-matches .bracket-lines.first-round {
         height: calc(50% + 28px + 1px);
         top: 50%;
-        transform: translateY(-50%);
+        
     }
     .StandingsBracketStandard .outer-grouping .grouping .previous-matches .bracket-lines.first-round:after {
         top: 50%
@@ -12421,7 +12420,7 @@ img {
         position: absolute;
         right: 16px;
         top: 50%;
-        transform: translateY(-50%);
+        
         width: 24px;
         height: 24px;
         margin: -2px 0 0 8px;
@@ -12469,7 +12468,7 @@ img {
         position: absolute;
         right: 16px;
         top: 50%;
-        transform: translateY(-50%);
+        
         width: 16px;
         height: 16px;
         margin: -2px 0 0 8px;
@@ -12543,7 +12542,7 @@ img {
         color: #fff;
         bottom: 0;
         left: 50%;
-        transform: translateX(-50%);
+        ;
         text-align: center;
         width: 20px;
         height: 20px;
@@ -12820,7 +12819,7 @@ img {
         background-image: radial-gradient(#000 10%, transparent 80%);
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);
+        
         border-radius: 25px;
         z-index: -1
     }
@@ -13013,7 +13012,7 @@ img {
     .StatsMatchupPlayers .player .portrait .wrapper .image {
         width: 70px;
         height: 70px;
-        transform: scale3d(1.2, 1.2, 1.2)
+        
     }
 }
 
@@ -13028,7 +13027,7 @@ img {
     .StatsMatchupPlayers .player .portrait .wrapper .image {
         width: 60px;
         height: 60px;
-        transform: scale3d(1.2, 1.2, 1.2)
+        
     }
 }
 
@@ -13337,7 +13336,7 @@ img {
         height: 100%;
         width: 100%;
         margin: 0;
-        transform: scale3d(1.1, 1.1, 1.1)
+
     }
     .StatsTeamsPlayers .player .portrait .level {
         position: absolute;
@@ -13627,7 +13626,7 @@ img {
     justify-content: center;
     height: 48px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    
     background: #252c32;
     font-weight: bold;
     font-size: 16px;
@@ -13690,37 +13689,37 @@ img {
 
 @-moz-keyframes countdownBarShrink {
     0% {
-        transform: translateX(0%)
+        
     }
     100% {
-        transform: translateX(-103%)
+        
     }
 }
 
 @-webkit-keyframes countdownBarShrink {
     0% {
-        transform: translateX(0%)
+        
     }
     100% {
-        transform: translateX(-103%)
+        
     }
 }
 
 @-o-keyframes countdownBarShrink {
     0% {
-        transform: translateX(0%)
+        
     }
     100% {
-        transform: translateX(-103%)
+        
     }
 }
 
 @keyframes countdownBarShrink {
     0% {
-        transform: translateX(0%)
+        
     }
     100% {
-        transform: translateX(-103%)
+        
     }
 }
 
@@ -14877,7 +14876,7 @@ img {
         position: absolute;
         right: 16px;
         top: 50%;
-        transform: translateY(-50%);
+        
         width: 16px;
         height: 16px;
         margin: -2px 0 0 8px;
@@ -14947,7 +14946,7 @@ img {
         position: absolute;
         right: 16px;
         top: 50%;
-        transform: translateY(-50%);
+        
         width: 24px;
         height: 24px;
         margin: -2px 0 0 8px;
