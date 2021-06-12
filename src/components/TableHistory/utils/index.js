@@ -1,0 +1,22 @@
+export var Month = new Array();
+Month[0] = "Jan";
+Month[1] = "Fev";
+Month[2] = "Mar";
+Month[3] = "Abr";
+Month[4] = "Mai";
+Month[5] = "Jun";
+Month[6] = "Jul";
+Month[7] = "Ago";
+Month[8] = "Set";
+Month[9] = "Out";
+Month[10] = "Nov";
+Month[11] = "Dez";
+
+export var Week = new Array();
+Week[0] = "Domingo";
+Week[1] = "Segunda-Feira";
+Week[2] = "Terça-Feira";
+Week[3] = "Quarta-Feira";
+Week[4] = "Quinta-Feira";
+Week[5] = "Sexta-Feira";
+Week[6] = "Sábado";

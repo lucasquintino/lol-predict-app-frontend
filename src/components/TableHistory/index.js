@@ -10,19 +10,21 @@ import TableCell from "@material-ui/core/TableCell";
 import { useHistory} from 'react-router-dom'
 // core components
 import styles from "./tableStyle.js";
+import { Month, Week } from "./utils";
 
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
   const classes = useStyles();
   const history = useHistory()
-  const { tableHead, tableData, tableHeaderColor } = props;
+  const { tableHead, tableData, tableHeaderColor, team } = props;
+
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
         {tableHead !== undefined ? (
-          <TableHead >
-            <TableRow >
+          <TableHead>
+            <TableRow>
               {tableHead.map((prop, key) => {
                 return (
                   <TableCell
@@ -40,47 +42,54 @@ export default function CustomTable(props) {
           {tableData.map((cell) => (
             <>
               <TableRow
-                
                 className={classes.tableBodyRow}
                 className="tableBodyRow2"
               >
                 <div>
                   <TableCell className={classes.tableCellTime}>
-                  <div class="EventTime">
+                    <div class="EventTime">
                       <div class="time">
-                        <span class="hour">                    {('0' + cell[0]).slice(-2)}</span>
-                        <span class="minute">00</span>
-                        <span class="approx">APROX.</span>
+                        <span style={{color: cell.result ? '#0b5c04' : 'rgb(216, 34, 52)'}}>{cell.result ? 'Win' : 'Loss'}</span>
                       </div>
                     </div>
                   </TableCell>
 
                   <TableCell className={classes.tableCellTeams}>
                     <div className="divMatch">
-                      <div className="divTeam" >
-                        <h1 className="teamName">{cell[1][0].name}</h1>
+                      <div className="divTeam">
+                        <h1 className="teamName">{team?.teamId}</h1>
                         <img
-                         onClick={() => history.push(`/history/${cell[1][0].name}`)}
                           className="imgTeam"
-                          src={cell[1][0].image}
+                          src={`https://oracleselixir-team-logos.s3-us-west-2.amazonaws.com/${team?.logo}`}
                           alt=""
                         />
                       </div>
                       <h1 className="vs">vs</h1>
-                      <div className="divTeam2"  >
+                      <div className="divTeam2">
                         <img
-                        onClick={() => history.push(`/history/${cell[1][1].name}`)}
                           className="imgTeam"
-                          src={cell[1][1].image}
+                          onClick={() => history.push(`/history/${cell.opponentTeamId}`)}
+                          src={`https://oracleselixir-team-logos.s3-us-west-2.amazonaws.com/${cell.opponentLogo}`}
                           alt=""
                         />
-                        <h1 className="teamName">{cell[1][1].name}</h1>
+                        <h1 className="teamName">{cell.opponentTeam}</h1>
                       </div>
                     </div>
                   </TableCell>
-
-                  <TableCell className={classes.tableCellLeague}>
-                    {cell[2].split(" ")[0]}
+                  <TableCell className={classes.tableCellTime}>
+                    <div class="EventTime">
+                      <div class="time">
+                        <span class="hour">
+                          {" "}
+                          {("0" + new Date(cell.gameCreation).getDate()).slice(
+                            -2
+                          )}
+                        </span>
+                        <span class="minute">
+                          {Month[new Date(cell.gameCreation).getMonth()]}
+                        </span>
+                      </div>
+                    </div>
                   </TableCell>
                 </div>
               </TableRow>

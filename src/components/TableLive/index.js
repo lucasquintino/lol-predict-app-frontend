@@ -10,7 +10,10 @@ import TableCell from "@material-ui/core/TableCell";
 import WatchLater from "@material-ui/icons/WatchLater";
 import Collapse from "@material-ui/core/Collapse";
 import { toast, ToastContainer } from "react-toastify";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import "react-toastify/dist/ReactToastify.min.css";
+
+import SkeletonMatch from "../SkeletonMatch";
 
 // core components
 
@@ -21,9 +24,6 @@ import styles from "./tableStyle.js";
 const api2 = axios.create({
   baseURL: "https://feed.lolesports.com/livestats/v1/window",
 });
-
-
-
 
 const useStyles = makeStyles(styles);
 
@@ -56,11 +56,6 @@ function millisToMinutesAndSeconds(millis) {
 }
 
 export default function CustomTable(props) {
-  
-useEffect(() => {
-console.log('oi')
-}, [window.location])
-
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(-1);
@@ -94,26 +89,26 @@ console.log('oi')
       setBlue(0);
       setRed(0);
       if (gameId) {
+        const result = await api2.get(`/${gameId}`);
+        if (result?.data) {
+          var blueTeam =
+            result?.data.gameMetadata.blueTeamMetadata.esportsTeamId;
+          var redTeam = result?.data.gameMetadata.redTeamMetadata.esportsTeamId;
 
-        const result = await api2.get(
-          `/${gameId}`
-        );
-        var blueTeam = result.data.gameMetadata.blueTeamMetadata.esportsTeamId;
-        var redTeam = result.data.gameMetadata.redTeamMetadata.esportsTeamId;
-
-        const blue = await api.get(`/getTeams?hl=pt-BR&id=${blueTeam}`, {
-          headers: {
-            "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
-          },
-        });
-        const red = await api.get(`/getTeams?hl=pt-BR&id=${redTeam}`, {
-          headers: {
-            "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
-          },
-        });
-       
-        return { result, blue, red };
-      } else  toast.error("A partida selecionada está indisponivel no momento");
+          const blue = await api.get(`/getTeams?hl=pt-BR&id=${blueTeam}`, {
+            headers: {
+              "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
+            },
+          });
+          const red = await api.get(`/getTeams?hl=pt-BR&id=${redTeam}`, {
+            headers: {
+              "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
+            },
+          });
+          return { result, blue, red };
+        } else
+          toast.error("A partida selecionada está indisponivel no momento");
+      } else toast.error("A partida selecionada está indisponivel no momento");
     }
 
     async function fetchData(result, blue, red) {
@@ -130,15 +125,15 @@ console.log('oi')
         var seconds = date.getSeconds() - 60;
         date.setSeconds(Math.round(seconds / 10) * 10);
 
-        console.log(diff);
         var btotalXp = 0;
         var btotalCs = 0;
         var rtotalXp = 0;
         var rtotalCs = 0;
+        console.log(date.toISOString());
         const res = await api2.get(
           `/${gameId}?startingTime=${date.toISOString()}`
         );
-        console.log(res);
+
         if (typeof res.data.frames === "undefined")
           window.location.reload(false);
 
@@ -149,8 +144,6 @@ console.log('oi')
           result.data.gameMetadata.blueTeamMetadata.participantMetadata[0].summonerName.split(
             " "
           )[0];
-
-        console.log(blue, red);
 
         if (typeof blue.data.data.teams !== "undefined") {
           if (blue.data.data.teams[0].code !== aux) {
@@ -218,9 +211,7 @@ console.log('oi')
           time.setMinutes(minutes);
 
           const res15 = await api2.get(
-            `/${
-              res.data.esportsGameId
-            }?startingTime=${time.toISOString()}`
+            `/${res.data.esportsGameId}?startingTime=${time.toISOString()}`
           );
 
           var btotalXp = 0;
@@ -252,7 +243,16 @@ console.log('oi')
               csdiffat15: btotalCs - rtotalCs,
             };
 
-            console.log(match15);
+            axios
+              .post("http://127.0.0.1:5000/predict", [match15], {
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Content-Type": "application/json",
+                },
+              })
+              .then((res) => {
+                setPredict(res.data.prediction[0]);
+              });
           }
         }
       } else {
@@ -277,24 +277,26 @@ console.log('oi')
         setDiff(0);
         setBlue(0);
         setRed(0);
-        console.log(result.status, gameId);
       }
     }
     getGame().then((res) => {
-      const { result, blue, red } = res;
-      if (open !== -1) {
-        setOpen(-1);
-        clearInterval(interval);
-      } else {
-        setOpen(index);
-        interval = window.setInterval(function () {
-          fetchData(result, blue, red);
-        }, 1000);
+      if (res) {
+        const { result, blue, red } = res;
+        if (open !== -1) {
+          setOpen(-1);
+          clearInterval(interval);
+        } else {
+          setOpen(index);
+          interval = window.setInterval(function () {
+            fetchData(result, blue, red);
+          }, 1000);
+        }
       }
     });
   };
 
   const { tableHead, tableData, tableHeaderColor } = props;
+  console.log(tableData);
   return (
     <div className={classes.tableResponsive}>
       <ToastContainer style={{ fontSize: 18 }} />
@@ -316,13 +318,11 @@ console.log('oi')
           </TableHead>
         ) : null}
         <TableBody>
-          {console.log(tableData)}
           {typeof tableData !== "undefined" ? (
             tableData.map((cell, index) => (
               <>
                 <TableRow
                   onClick={() => getMatch(index, cell.gameId)}
-                  className={classes.tableBodyRow}
                   className={
                     (open === index && "selecteD") || "tableBodyRowHover"
                   }
@@ -351,14 +351,37 @@ console.log('oi')
                               : cell.match.teams[0].code}
                           </h1>
                           <img
+                            onClick={() => {
+                              const win = window.open(
+                                `/#/history/${cell.match.teams[0].name}`,
+                                "_blank"
+                              );
+                              win.focus();
+                            }}
                             className="imgTeam"
                             src={cell.match.teams[0].image}
                             alt=""
                           />
                         </div>
-                        <h1 className="vs">vs</h1>
+                        <div className="vsDiv">
+                          <h1 className="vs">vs</h1>
+                          <a
+                            href={`https://lolesports.com/live/${cell?.league?.slug}`}
+                            target="_blank"
+                          >
+                            <VisibilityIcon className="viewIcon" />
+                          </a>
+                        </div>
+
                         <div className="divTeam2">
                           <img
+                          onClick={() => {
+                              const win = window.open(
+                                `/#/history/${cell.match.teams[1].name}`,
+                                "_blank"
+                              );
+                              win.focus();
+                            }}
                             className="imgTeam"
                             src={cell.match.teams[1].image}
                             alt=""
@@ -415,7 +438,9 @@ console.log('oi')
                                   <div className="result">VENCEDOR</div>
                                   <div
                                     className={
-                                      predict === 1 ? "team1 predicted" : "team1"
+                                      predict === 1
+                                        ? "team1 predicted"
+                                        : "team1"
                                     }
                                   >
                                     <img
@@ -738,7 +763,7 @@ console.log('oi')
               </>
             ))
           ) : (
-            <div></div>
+            <SkeletonMatch />
           )}
         </TableBody>
       </Table>

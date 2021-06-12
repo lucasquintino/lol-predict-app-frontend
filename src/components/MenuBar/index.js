@@ -39,7 +39,7 @@ const list = [
     name: "Ao Vivo",
     route: "/live",
     icon: <LiveTv style={{ width: 25, height: 25 }} />,
-  },
+  }
 ];
 
 const MenuBar = () => {

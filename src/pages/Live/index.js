@@ -81,6 +81,7 @@ const Managers = () => {
                 },
               }
             );
+            console.log(res2)
             gamesList = [...gamesList, res2.data.data.event.match.games];
             if (gamesList.length == data.length) {
               gamesList.map((games, index) => {

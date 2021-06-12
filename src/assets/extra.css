@@ -2,11 +2,13 @@ body {
   background: #0a0e13;
 }
 .imgTeam {
+  cursor: pointer;
   height: 75px;
   width: 75px;
   margin-right: 10px;
 }
 .divTeam {
+
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -29,13 +31,24 @@ body {
   align-items: center;
   flex-direction: row;
 }
+.vsDiv {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
+
+.viewIcon {
+  font-size: 25px !important;
+ }
+
 .vs {
-  margin-right: 20px;
+  margin: 0px 20px;
   font-family: "Poppins";
   font-weight: bold;
   line-height: 1.42857143;
   color: #8fa3b0;
-  padding: 12px 8px;
+  padding: 0px 8px;
   vertical-align: middle;
   font-size: 2.6125rem;
 }
