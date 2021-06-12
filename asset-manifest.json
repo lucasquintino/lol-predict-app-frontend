@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/lol-predict-app-frontend/static/css/main.051b3d41.chunk.css",
-    "main.js": "/lol-predict-app-frontend/static/js/main.9ae3b616.chunk.js",
-    "main.js.map": "/lol-predict-app-frontend/static/js/main.9ae3b616.chunk.js.map",
+    "main.js": "/lol-predict-app-frontend/static/js/main.247906ec.chunk.js",
+    "main.js.map": "/lol-predict-app-frontend/static/js/main.247906ec.chunk.js.map",
     "runtime-main.js": "/lol-predict-app-frontend/static/js/runtime-main.e96b2859.js",
     "runtime-main.js.map": "/lol-predict-app-frontend/static/js/runtime-main.e96b2859.js.map",
     "static/css/2.e8b3d208.chunk.css": "/lol-predict-app-frontend/static/css/2.e8b3d208.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.e8b3d208.chunk.css",
     "static/js/2.2f35c369.chunk.js",
     "static/css/main.051b3d41.chunk.css",
-    "static/js/main.9ae3b616.chunk.js"
+    "static/js/main.247906ec.chunk.js"
   ]
 }
