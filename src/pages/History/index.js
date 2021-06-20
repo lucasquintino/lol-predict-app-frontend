@@ -14,7 +14,7 @@ const Managers = () => {
   const [matches, setMatches] = useState([]);
   const [team, setTeam] = useState();
   let { teamName } = useParams();
-  console.log(teamName);
+
   useEffect(() => {
     async function fetchData() {
       let res;
@@ -29,7 +29,7 @@ const Managers = () => {
           }
         );
       } catch (error) {
-        console.log(error);
+
         teamName = teamName.split(" ")[0];
         res2 = await axios.get(
           `https://tgt7ghqvcb.execute-api.us-west-2.amazonaws.com/prod/teams/${
@@ -52,14 +52,14 @@ const Managers = () => {
         }
       );
 
-      console.log(res);
+
       setMatches(res?.data);
       setTeam(res2?.data);
     }
     fetchData();
   }, [teamName]);
 
-  console.log(team);
+
 
   return (
     <div>

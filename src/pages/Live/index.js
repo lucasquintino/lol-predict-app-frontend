@@ -70,36 +70,53 @@ const Managers = () => {
       var data = res.data.data.schedule.events.filter((event) => {
         return event.type === "match";
       });
-      const getData = async () =>
-        Promise.all(
-          data.map(async (event) => {
-            const res2 = await api.get(
-              `/getEventDetails?hl=pt-BR&id=${event.id}`,
-              {
-                headers: {
-                  "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
-                },
-              }
-            );
-            console.log(res2)
-            gamesList = [...gamesList, res2.data.data.event.match.games];
-            if (gamesList.length == data.length) {
-              gamesList.map((games, index) => {
-                games = games.filter((game) => game.state === "inProgress");
-                if (games.length > 0) {
-                  gamesList[index] = games;
-                  data[index].count = games[0].number;
-                  data[index].gameId = games[0].id;
-                  data[index].time = new Date(data[index].startTime).getHours();
-                }
-              });
-            }
-          })
-        );
-      await getData();
-      setMatches(data);
+      return data;
     }
-    fetchData();
+    const getData = async (data) => {
+      Promise.all(
+        data.map(async (event) => {
+          const res2 = await api.get(
+            `/getEventDetails?hl=pt-BR&id=${event.id}`,
+            {
+              headers: {
+                "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
+              },
+            }
+          );
+          const games = res2.data.data.event.match.games;
+
+          console.log(games);
+          games.map((game) => {
+            if (game.state === "inProgress") {
+              event.count = game.number;
+              event.gameId = game.id;
+              event.time = new Date(event.startTime).getHours();
+            }
+          });
+
+          // gamesList = [...gamesList, res2.data.data.event.match.games];
+          // if (gamesList.length == data.length) {
+          //   gamesList.map((games, index) => {
+          //     games = games.filter((game) => game.state === "inProgress");
+          //     if (games.length > 0) {
+          //       gamesList[index] = games;
+          //       console.log(data);
+          //       console.log(games);
+          //       data[index].count = games[0].number;
+          //       data[index].gameId = games[0].id;
+          //       data[index].time = new Date(data[index].startTime).getHours();
+          //     }
+          //   });
+          // }
+        })
+      );
+      return data;
+    };
+    fetchData().then((res) => {
+      getData(res).then((res) => {
+        setMatches(res);
+      });
+    });
   }, []);
 
   return (

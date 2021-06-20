@@ -15,7 +15,7 @@ body {
   flex-direction: row;
 
   width: 100%;
-  margin-right: 20px
+
 }
 .divTeam2 {
     display: flex;
@@ -61,7 +61,18 @@ body {
     font-size: 1.9125rem;
     min-width: fit-content;
     width: max-content;
+    height: 50px;
+    display: flex;
 
+    align-items: flex-end;
+
+}
+.divName {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px
 }
 .tableBodyRowHover:hover{
   cursor: pointer;
@@ -136,6 +147,12 @@ border-bottom: 0.2px solid rgba(204, 204, 204, 0.205);
   width: 33.4%;
 }
 
+.team2 .imgTeam {
+  height: 45px;
+  width: 45px;
+  margin: 0;
+}
+
 .team2 .teamName{
   font-family: "Poppins";
   font-weight: bold;
@@ -143,16 +160,30 @@ border-bottom: 0.2px solid rgba(204, 204, 204, 0.205);
   vertical-align: middle;
   font-size: 1.6125rem;
 }
-.team2 .imgTeam {
-  height: 45px;
-  width: 45px;
-  margin: 0;
+.divTeam .imgTeam {
+  margin-left: 20px;
+}
+.teamOddBlue {
+  color: rgb(3, 113, 156);
+  font-weight: bold;
+}
+
+.teamOddRed{
+  color: #EE2737;
+  font-weight: bold;
+}
+
+.divTeam2 .imgTeam {
+  margin-right: 20px;
 }
 .selecteD{
   background: #000;
-   cursor: pointer;
   padding: 0;
   transition: background-color .25s ease-out,width .25s ease-out,margin .25s ease-out,padding .25s ease-out;
+}
+
+.selectedDiv{
+  cursor: pointer
 }
 .matchNumber{
 
@@ -178,6 +209,21 @@ border-bottom: 0.2px solid rgba(204, 204, 204, 0.205);
 
 
 }
+.labelBlue{
+  color: rgb(3, 113, 156);
+  font-weight: bold;
+}
+.labelRed{
+  color: #EE2737;
+  font-weight: bold;
+}
+.buttonLabel {
+  border: transparent;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}
+
 .type{
   display: flex;
   justify-content: center;

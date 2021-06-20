@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -11,14 +11,17 @@ import WatchLater from "@material-ui/icons/WatchLater";
 import Collapse from "@material-ui/core/Collapse";
 import { toast, ToastContainer } from "react-toastify";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+
 import "react-toastify/dist/ReactToastify.min.css";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import SkeletonMatch from "../SkeletonMatch";
 
 // core components
 
 import axios from "axios";
-import api from "../..//api";
+import api from "../../api";
+import { getOdd } from "./utils";
 import styles from "./tableStyle.js";
 
 const api2 = axios.create({
@@ -26,6 +29,15 @@ const api2 = axios.create({
 });
 
 const useStyles = makeStyles(styles);
+
+const CustomTooltip = withStyles((theme) => ({
+  tooltip: {
+    background: "#0f1519",
+    color: "#ddd",
+    padding: 10,
+    fontSize: 14,
+  },
+}))(Tooltip);
 
 var LvlToXp = new Array();
 LvlToXp[1] = 0;
@@ -48,6 +60,7 @@ LvlToXp[17] = 16480;
 LvlToXp[18] = 18360;
 
 var interval;
+var interval2;
 
 function millisToMinutesAndSeconds(millis) {
   var minutes = Math.floor(millis / 60000);
@@ -57,13 +70,172 @@ function millisToMinutesAndSeconds(millis) {
 
 export default function CustomTable(props) {
   const classes = useStyles();
-
+  const [reverse, setReverse] = useState(false);
+  const [odds, setOdds] = useState([]);
   const [open, setOpen] = React.useState(-1);
   const [match, setMatch] = useState();
-  const [diff, setDiff] = useState([0]);
-  const [blue, setBlue] = useState([0]);
-  const [red, setRed] = useState([0]);
-  const [predict, setPredict] = useState(false);
+  const [diff, setDiff] = useState([]);
+  const [blue, setBlue] = useState();
+  const [red, setRed] = useState();
+  const [predict, setPredict] = useState(-1);
+  const [predict10, setPredict10] = useState(-1);
+  const [predictAt, setPredictAt] = useState(-1);
+  const [allowPredict, setAllowPredict] = useState();
+
+  useEffect(() => {
+    const predictMatch = async () => {
+      if (predict === -1) {
+
+
+        if (Number(allowPredict?.diff.split(":")[0]) > 15) {
+          allowPredict?.time.setMilliseconds(0);
+          var minutes = allowPredict?.time.getMinutes() + 10;
+          allowPredict?.time.setSeconds(0);
+          allowPredict?.time.setMinutes(minutes);
+          const res10 = await api2.get(
+            `/${
+              allowPredict?.res.data.esportsGameId
+            }?startingTime=${allowPredict?.time.toISOString()}`
+          );
+
+          var minutes = allowPredict?.time.getMinutes() + 5;
+
+          allowPredict?.time.setMinutes(minutes);
+
+          const res15 = await api2.get(
+            `/${
+              allowPredict?.res.data.esportsGameId
+            }?startingTime=${allowPredict?.time.toISOString()}`
+          );
+
+          var btotalXp = 0;
+          var btotalCs = 0;
+          var rtotalXp = 0;
+          var rtotalCs = 0;
+          var btotal15Xp = 0;
+          var btotal15Cs = 0;
+          var rtotal15Xp = 0;
+          var rtotal15Cs = 0;
+
+          if (typeof res10.data.frames !== "undefined") {
+            res10.data.frames[9].blueTeam.participants.map((participant) => {
+              btotalXp = btotalXp + LvlToXp[participant.level];
+              btotalCs = btotalCs + participant.creepScore;
+            });
+            res10.data.frames[9].redTeam.participants.map((participant) => {
+              rtotalXp = rtotalXp + LvlToXp[participant.level];
+              rtotalCs = rtotalCs + participant.creepScore;
+            });
+
+            var match10 = {
+              goldat10: res10.data.frames[9].blueTeam.totalGold,
+              xpat10: btotalXp,
+              csat10: btotalCs,
+              opp_goldat10: res10.data.frames[9].redTeam.totalGold,
+              opp_xpat10: rtotalXp,
+              opp_csat10: rtotalCs,
+              killsat10: res10.data.frames[9].blueTeam.totalKills,
+              opp_killsat10: res10.data.frames[9].redTeam.totalKills,
+            };
+          }
+
+          if (typeof res15.data.frames !== "undefined") {
+            res15.data.frames[9].blueTeam.participants.map((participant) => {
+              btotal15Xp = btotal15Xp + LvlToXp[participant.level];
+              btotal15Cs = btotal15Cs + participant.creepScore;
+            });
+            res15.data.frames[9].redTeam.participants.map((participant) => {
+              rtotal15Xp = rtotal15Xp + LvlToXp[participant.level];
+              rtotal15Cs = rtotal15Cs + participant.creepScore;
+            });
+
+            var match15 = {
+              goldat15: res15.data.frames[9].blueTeam.totalGold,
+              xpat15: btotal15Xp,
+              csat15: btotal15Cs,
+              opp_goldat15: res15.data.frames[9].redTeam.totalGold,
+              opp_xpat15: rtotal15Xp,
+              opp_csat15: rtotal15Cs,
+              killsat15: res15.data.frames[9].blueTeam.totalKills,
+              opp_killsat15: res15.data.frames[9].redTeam.totalKills,
+            };
+
+            var match = { ...match15, ...match10 };
+
+            axios
+              .post("https://api-lol-predict.herokuapp.com/predictAt15", [
+                match,
+              ])
+              .then((res) => {
+                setPredict(res.data.prediction[0]);
+                setPredictAt(1);
+              });
+          }
+        } else if (Number(allowPredict?.diff.split(":")[0]) > 10) {
+
+          setPredictAt(0);
+        }
+      }
+    };
+    predictMatch();
+  }, [allowPredict]);
+
+  useEffect(() => {
+    const predictMatch = async () => {
+      if (predict10 === -1 && predictAt === 0) {
+
+        if (Number(allowPredict?.diff.split(":")[0]) > 10) {
+          allowPredict?.time.setMilliseconds(0);
+          var minutes = allowPredict?.time.getMinutes() + 10;
+          allowPredict?.time.setSeconds(0);
+          allowPredict?.time.setMinutes(minutes);
+
+          const res10 = await api2.get(
+            `/${
+              allowPredict?.res.data.esportsGameId
+            }?startingTime=${allowPredict?.time.toISOString()}`
+          );
+
+          var btotalXp = 0;
+          var btotalCs = 0;
+          var rtotalXp = 0;
+          var rtotalCs = 0;
+
+          if (typeof res10.data.frames !== "undefined") {
+            res10.data.frames[9].blueTeam.participants.map((participant) => {
+              btotalXp = btotalXp + LvlToXp[participant.level];
+              btotalCs = btotalCs + participant.creepScore;
+            });
+            res10.data.frames[9].redTeam.participants.map((participant) => {
+              rtotalXp = rtotalXp + LvlToXp[participant.level];
+              rtotalCs = rtotalCs + participant.creepScore;
+            });
+
+            var match10 = {
+              goldat10: res10.data.frames[9].blueTeam.totalGold,
+              xpat10: btotalXp,
+              csat10: btotalCs,
+              opp_goldat10: res10.data.frames[9].redTeam.totalGold,
+              opp_xpat10: rtotalXp,
+              opp_csat10: rtotalCs,
+              killsat10: res10.data.frames[9].blueTeam.totalKills,
+              opp_killsat10: res10.data.frames[9].redTeam.totalKills,
+            };
+
+            axios
+              .post("https://api-lol-predict.herokuapp.com/predictAt10", [
+                match10,
+              ])
+              .then((res) => {
+                setPredict10(res.data.prediction[0]);
+              });
+          }
+        }
+      }
+    };
+    predictMatch();
+  }, [allowPredict]);
+
 
   const getMatch = (index, gameId) => {
     async function getGame() {
@@ -85,9 +257,13 @@ export default function CustomTable(props) {
         opp_xp: 0,
         opp_cs: 0,
       });
+      setPredict(-1);
       setDiff(0);
-      setBlue(0);
-      setRed(0);
+      setBlue();
+      setRed();
+
+      const id = Number(tableData[index].id) + 1;
+
       if (gameId) {
         const result = await api2.get(`/${gameId}`);
         if (result?.data) {
@@ -105,15 +281,37 @@ export default function CustomTable(props) {
               "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
             },
           });
+          setMatch({
+            gold: 0,
+            kills: 0,
+            towers: 0,
+            inhibitors: 0,
+            dragons: 0,
+            barons: 0,
+            xp: 0,
+            cs: 0,
+            opp_gold: 0,
+            opp_kills: 0,
+            opp_towers: 0,
+            opp_inhibitors: 0,
+            opp_dragons: 0,
+            opp_barons: 0,
+            opp_xp: 0,
+            opp_cs: 0,
+          });
+
           return { result, blue, red };
         } else
-          toast.error("A partida selecionada está indisponivel no momento");
-      } else toast.error("A partida selecionada está indisponivel no momento");
+          toast.error("A partida selecionada está indisponivel no sdmomento");
+      } else
+        toast.error("A partida selecionada está indisponivsadasel no momento");
     }
 
     async function fetchData(result, blue, red) {
       if (result.status === 200) {
-        var time = result.data.frames[0].rfc460Timestamp;
+        var time =
+          result.data.frames[result.data.frames.length - 1].rfc460Timestamp;
+
         time = new Date(time);
         var now = new Date(Date.now());
         var secondsNow = now.getSeconds() - 60;
@@ -129,16 +327,13 @@ export default function CustomTable(props) {
         var btotalCs = 0;
         var rtotalXp = 0;
         var rtotalCs = 0;
-        console.log(date.toISOString());
+
         const res = await api2.get(
           `/${gameId}?startingTime=${date.toISOString()}`
         );
 
         if (typeof res.data.frames === "undefined")
           window.location.reload(false);
-
-        var blueTeam = result.data.gameMetadata.blueTeamMetadata.esportsTeamId;
-        var redTeam = result.data.gameMetadata.redTeamMetadata.esportsTeamId;
 
         var aux =
           result.data.gameMetadata.blueTeamMetadata.participantMetadata[0].summonerName.split(
@@ -149,29 +344,39 @@ export default function CustomTable(props) {
           if (blue.data.data.teams[0].code !== aux) {
             setBlue(red.data.data.teams[0]);
             setRed(blue.data.data.teams[0]);
+            setReverse(true);
           } else {
             setBlue(blue.data.data.teams[0]);
             setRed(red.data.data.teams[0]);
           }
         }
         if (typeof res.data.frames !== "undefined") {
-          typeof res.data.frames[9] !== "undefined" &&
-            res.data.frames[9].blueTeam.participants.map((participant) => {
+          setAllowPredict({ time, res, diff });
+
+          typeof res.data.frames[res.data.frames.length - 1] !== "undefined" &&
+            res.data.frames[
+              res.data.frames.length - 1
+            ].blueTeam.participants.map((participant) => {
               btotalXp = btotalXp + LvlToXp[participant.level];
               btotalCs = btotalCs + participant.creepScore;
             });
-          typeof res.data.frames[9] !== "undefined" &&
-            res.data.frames[9].redTeam.participants.map((participant) => {
+          typeof res.data.frames[res.data.frames.length - 1] !== "undefined" &&
+            res.data.frames[
+              res.data.frames.length - 1
+            ].redTeam.participants.map((participant) => {
               rtotalXp = rtotalXp + LvlToXp[participant.level];
               rtotalCs = rtotalCs + participant.creepScore;
             });
 
           if (typeof res.data.frames !== "undefined") {
             if (
-              typeof res.data.frames[9] !== "undefined" &&
-              res.data.frames[9].gameState === "finished"
+              typeof res.data.frames[res.data.frames.length - 1] !==
+                "undefined" &&
+              res.data.frames[res.data.frames.length - 1].gameState ===
+                "finished"
             ) {
-              var timeOver = res.data.frames[9].rfc460Timestamp;
+              var timeOver =
+                res.data.frames[res.data.frames.length - 1].rfc460Timestamp;
 
               timeOver = new Date(timeOver);
 
@@ -180,81 +385,44 @@ export default function CustomTable(props) {
           } else window.location.reload(false);
 
           setDiff(diff);
-          if (typeof res.data.frames[9] !== "undefined") {
+          if (
+            typeof res.data.frames[res.data.frames.length - 1] !== "undefined"
+          ) {
             var match = {
-              gold: res.data.frames[9].blueTeam.totalGold,
-              kills: res.data.frames[9].blueTeam.totalKills,
-              towers: res.data.frames[9].blueTeam.towers,
-              inhibitors: res.data.frames[9].blueTeam.inhibitors,
-              dragons: res.data.frames[9].blueTeam.dragons.length,
-              barons: res.data.frames[9].blueTeam.barons,
+              gold: res.data.frames[res.data.frames.length - 1].blueTeam
+                .totalGold,
+              kills:
+                res.data.frames[res.data.frames.length - 1].blueTeam.totalKills,
+              towers:
+                res.data.frames[res.data.frames.length - 1].blueTeam.towers,
+              inhibitors:
+                res.data.frames[res.data.frames.length - 1].blueTeam.inhibitors,
+              dragons:
+                res.data.frames[res.data.frames.length - 1].blueTeam.dragons
+                  .length,
+              barons:
+                res.data.frames[res.data.frames.length - 1].blueTeam.barons,
               xp: btotalXp,
               cs: btotalCs,
-              opp_gold: res.data.frames[9].redTeam.totalGold,
-              opp_kills: res.data.frames[9].redTeam.totalKills,
-              opp_towers: res.data.frames[9].redTeam.towers,
-              opp_inhibitors: res.data.frames[9].redTeam.inhibitors,
-              opp_dragons: res.data.frames[9].redTeam.dragons.length,
-              opp_barons: res.data.frames[9].redTeam.barons,
+              opp_gold:
+                res.data.frames[res.data.frames.length - 1].redTeam.totalGold,
+              opp_kills:
+                res.data.frames[res.data.frames.length - 1].redTeam.totalKills,
+              opp_towers:
+                res.data.frames[res.data.frames.length - 1].redTeam.towers,
+              opp_inhibitors:
+                res.data.frames[res.data.frames.length - 1].redTeam.inhibitors,
+              opp_dragons:
+                res.data.frames[res.data.frames.length - 1].redTeam.dragons
+                  .length,
+              opp_barons:
+                res.data.frames[res.data.frames.length - 1].redTeam.barons,
               opp_xp: rtotalXp,
               opp_cs: rtotalCs,
             };
             setMatch(match);
           }
         } else window.location.reload(false);
-
-        if (!predict) {
-          setPredict(-1);
-          time.setMilliseconds(0);
-          var minutes = time.getMinutes() + 15;
-          time.setSeconds(0);
-          time.setMinutes(minutes);
-
-          const res15 = await api2.get(
-            `/${res.data.esportsGameId}?startingTime=${time.toISOString()}`
-          );
-
-          var btotalXp = 0;
-          var btotalCs = 0;
-          var rtotalXp = 0;
-          var rtotalCs = 0;
-
-          if (typeof res15.data.frames !== "undefined") {
-            res15.data.frames[0].blueTeam.participants.map((participant) => {
-              btotalXp = btotalXp + LvlToXp[participant.level];
-              btotalCs = btotalCs + participant.creepScore;
-            });
-            res15.data.frames[0].redTeam.participants.map((participant) => {
-              rtotalXp = rtotalXp + LvlToXp[participant.level];
-              rtotalCs = rtotalCs + participant.creepScore;
-            });
-
-            var match15 = {
-              goldat15: res15.data.frames[0].blueTeam.totalGold,
-              xpat15: btotalXp,
-              csat15: btotalCs,
-              opp_goldat15: res15.data.frames[0].redTeam.totalGold,
-              opp_xpat15: rtotalXp,
-              opp_csat15: rtotalCs,
-              golddiffat15:
-                res15.data.frames[0].blueTeam.totalGold -
-                res15.data.frames[0].redTeam.totalGold,
-              xpdiffat15: btotalXp - rtotalXp,
-              csdiffat15: btotalCs - rtotalCs,
-            };
-
-            axios
-              .post("http://127.0.0.1:5000/predict", [match15], {
-                headers: {
-                  "Access-Control-Allow-Origin": "*",
-                  "Content-Type": "application/json",
-                },
-              })
-              .then((res) => {
-                setPredict(res.data.prediction[0]);
-              });
-          }
-        }
       } else {
         setMatch({
           gold: 0,
@@ -279,24 +447,43 @@ export default function CustomTable(props) {
         setRed(0);
       }
     }
-    getGame().then((res) => {
-      if (res) {
-        const { result, blue, red } = res;
-        if (open !== -1) {
-          setOpen(-1);
-          clearInterval(interval);
-        } else {
+    if (open !== -1) {
+      setOpen(-1);
+      clearInterval(interval);
+    } else
+      getGame().then((res) => {
+        if (res) {
+          const { result, blue, red } = res;
+
           setOpen(index);
           interval = window.setInterval(function () {
             fetchData(result, blue, red);
           }, 1000);
         }
-      }
-    });
+      });
   };
 
+  useEffect(() => {
+    const getOdds = async (blue, red) => {
+
+      const teamOdds = await axios.get(
+        "https://api-lol-predict.herokuapp.com/odds"
+      );
+
+      const arrayOdds = getOdd(teamOdds.data, blue, red);
+
+      setOdds(arrayOdds);
+    };
+
+    if (blue && red && open !== -1) {
+      interval2 = window.setInterval(function () {
+        getOdds(blue, red);
+      }, 1000);
+    } else clearInterval(interval2);
+  }, [blue, red, open]);
+
   const { tableHead, tableData, tableHeaderColor } = props;
-  console.log(tableData);
+
   return (
     <div className={classes.tableResponsive}>
       <ToastContainer style={{ fontSize: 18 }} />
@@ -322,12 +509,15 @@ export default function CustomTable(props) {
             tableData.map((cell, index) => (
               <>
                 <TableRow
-                  onClick={() => getMatch(index, cell.gameId)}
+                  data-value="parent"
                   className={
                     (open === index && "selecteD") || "tableBodyRowHover"
                   }
                 >
-                  <div>
+                  <div
+                    onClick={() => getMatch(index, cell.gameId)}
+                    className={(open === index && "selectedDiv") || ""}
+                  >
                     <TableCell className={classes.tableCellTime}>
                       <div class="EventTime">
                         <div class="time">
@@ -345,52 +535,96 @@ export default function CustomTable(props) {
                     <TableCell className={classes.tableCellTeams}>
                       <div className="divMatch">
                         <div className="divTeam">
-                          <h1 className="teamName">
-                            {cell.match.teams[0].name.length < 20
-                              ? cell.match.teams[0].name
-                              : cell.match.teams[0].code}
-                          </h1>
-                          <img
-                            onClick={() => {
-                              const win = window.open(
-                                `/#/history/${cell.match.teams[0].name}`,
-                                "_blank"
-                              );
-                              win.focus();
-                            }}
-                            className="imgTeam"
-                            src={cell.match.teams[0].image}
-                            alt=""
-                          />
+                          <div className="divName">
+                            <h1 className="teamName">
+                              {cell.match.teams[0].name.length < 20
+                                ? cell.match.teams[0].name
+                                : cell.match.teams[0].code}
+                            </h1>
+                            <h3
+                              className={reverse ? `teamOddRed` : `teamOddBlue`}
+                            >
+                              {!!odds.length && open === index ? odds[0] : ""}
+                            </h3>
+                          </div>
+
+                          <CustomTooltip
+                            title={
+                              <React.Fragment>
+                                <p color="inherit">Ver Histórico</p>
+                              </React.Fragment>
+                            }
+                          >
+                            <img
+                              data-value="child"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const win = window.open(
+                                  `https://lucasquintino.github.io/lol-predict-app-frontend/#/history/${cell.match.teams[0].name}`,
+                                  "_blank"
+                                );
+                                win.focus();
+                              }}
+                              className="imgTeam"
+                              src={cell.match.teams[0].image}
+                              alt=""
+                            />
+                          </CustomTooltip>
                         </div>
                         <div className="vsDiv">
                           <h1 className="vs">vs</h1>
                           <a
+                            onClick={(e) => e.stopPropagation()}
                             href={`https://lolesports.com/live/${cell?.league?.slug}`}
                             target="_blank"
                           >
-                            <VisibilityIcon className="viewIcon" />
+                            <CustomTooltip
+                              title={
+                                <React.Fragment>
+                                  <p color="inherit">Assistir Partida</p>
+                                </React.Fragment>
+                              }
+                            >
+                              <VisibilityIcon className="viewIcon" />
+                            </CustomTooltip>
                           </a>
                         </div>
 
                         <div className="divTeam2">
-                          <img
-                          onClick={() => {
-                              const win = window.open(
-                                `/#/history/${cell.match.teams[1].name}`,
-                                "_blank"
-                              );
-                              win.focus();
-                            }}
-                            className="imgTeam"
-                            src={cell.match.teams[1].image}
-                            alt=""
-                          />
-                          <h1 className="teamName">
-                            {cell.match.teams[1].name.length < 20
-                              ? cell.match.teams[1].name
-                              : cell.match.teams[1].code}
-                          </h1>
+                          <CustomTooltip
+                            title={
+                              <React.Fragment>
+                                <p color="inherit">Ver Histórico</p>
+                              </React.Fragment>
+                            }
+                          >
+                            <img
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const win = window.open(
+                                  `https://lucasquintino.github.io/lol-predict-app-frontend/#/history/${cell.match.teams[1].name}`,
+                                  "_blank"
+                                );
+                                win.focus();
+                              }}
+                              className="imgTeam"
+                              src={cell.match.teams[1].image}
+                              alt=""
+                            />
+                          </CustomTooltip>
+
+                          <div className="divName">
+                            <h1 className="teamName">
+                              {cell.match.teams[1].name.length < 20
+                                ? cell.match.teams[1].name
+                                : cell.match.teams[1].code}
+                            </h1>
+                            <h3
+                              className={reverse ? `teamOddBlue` : `teamOddRed`}
+                            >
+                              {!!odds.length && open === index ? odds[1] : ""}
+                            </h3>
+                          </div>
                         </div>
                       </div>
                     </TableCell>
@@ -415,7 +649,7 @@ export default function CustomTable(props) {
                                   <div class="games">
                                     <span class="label">PREDIÇÕES</span>
                                     <h3 class="game game1 selected watch-annotated">
-                                      15
+                                      {predictAt === 1 ? "15" : "10"}
                                     </h3>
                                   </div>
                                 </div>
@@ -427,6 +661,7 @@ export default function CustomTable(props) {
                                   >
                                     BLUE
                                   </div>
+                     
                                   <div
                                     class="type"
                                     style={{ background: "#EE2737" }}
@@ -438,31 +673,39 @@ export default function CustomTable(props) {
                                   <div className="result">VENCEDOR</div>
                                   <div
                                     className={
-                                      predict === 1
+                                      predictAt === 1
+                                        ? predict === 1
+                                          ? "team1 predicted"
+                                          : "team1"
+                                        : predict10 === 1
                                         ? "team1 predicted"
                                         : "team1"
                                     }
                                   >
                                     <img
                                       className="imgTeam"
-                                      src={blue.image}
+                                      src={blue?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{blue.code}</h1>
+                                    <h1 className="teamName">{blue?.code}</h1>
                                   </div>
                                   <div
                                     className={
-                                      predict === 0
+                                      predictAt === 1
+                                        ? predict === 0
+                                          ? "team2 predicted"
+                                          : "team2"
+                                        : predict10 === 0
                                         ? "team2 predicted"
                                         : "team2"
                                     }
                                   >
                                     <img
                                       className="imgTeam"
-                                      src={red.image}
+                                      src={red?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{red.code}</h1>
+                                    <h1 className="teamName">{red?.code}</h1>
                                   </div>
                                 </div>
                                 <div className="prediction">
@@ -470,18 +713,18 @@ export default function CustomTable(props) {
                                   <div className="team1">
                                     <img
                                       className="imgTeam"
-                                      src={blue.image}
+                                      src={blue?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{blue.code}</h1>
+                                    <h1 className="teamName">{blue?.code}</h1>
                                   </div>
                                   <div className="team2">
                                     <img
                                       className="imgTeam"
-                                      src={red.image}
+                                      src={red?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{red.code}</h1>
+                                    <h1 className="teamName">{red?.code}</h1>
                                   </div>
                                 </div>
                                 <div className="prediction">
@@ -489,18 +732,18 @@ export default function CustomTable(props) {
                                   <div className="team1">
                                     <img
                                       className="imgTeam"
-                                      src={blue.image}
+                                      src={blue?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{blue.code}</h1>
+                                    <h1 className="teamName">{blue?.code}</h1>
                                   </div>
                                   <div className="team2">
                                     <img
                                       className="imgTeam"
-                                      src={red.image}
+                                      src={red?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{red.code}</h1>
+                                    <h1 className="teamName">{red?.code}</h1>
                                   </div>
                                 </div>
                                 <div className="prediction">
@@ -508,18 +751,18 @@ export default function CustomTable(props) {
                                   <div className="team1">
                                     <img
                                       className="imgTeam"
-                                      src={blue.image}
+                                      src={blue?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{blue.code}</h1>
+                                    <h1 className="teamName">{blue?.code}</h1>
                                   </div>
                                   <div className="team2">
                                     <img
                                       className="imgTeam"
-                                      src={red.image}
+                                      src={red?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{red.code}</h1>
+                                    <h1 className="teamName">{red?.code}</h1>
                                   </div>
                                 </div>
                                 <div className="prediction">
@@ -527,18 +770,18 @@ export default function CustomTable(props) {
                                   <div className="team1 ">
                                     <img
                                       className="imgTeam"
-                                      src={blue.image}
+                                      src={blue?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{blue.code}</h1>
+                                    <h1 className="teamName">{blue?.code}</h1>
                                   </div>
                                   <div className="team2">
                                     <img
                                       className="imgTeam"
-                                      src={red.image}
+                                      src={red?.image}
                                       alt=""
                                     />
-                                    <h1 className="teamName">{red.code}</h1>
+                                    <h1 className="teamName">{red?.code}</h1>
                                   </div>
                                 </div>
                               </div>
@@ -562,6 +805,14 @@ export default function CustomTable(props) {
                                           <h3 class="game game1 selected watch-annotated">
                                             {cell.count}
                                           </h3>
+                                        </div>
+                                        <div class="matchNumber">
+                                          <span class="label" style={{color: 'rgb(3, 113, 156)'}}>
+                                            {blue?.code}
+                                          </span>
+                                        </div>
+                                        <div class="matchNumber">
+                                          <span class="label"  style={{color: '#EE2737'}} >{red?.code}</span>
                                         </div>
 
                                         <div class="matchTime">

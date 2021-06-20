@@ -104,7 +104,7 @@ const defaultFont = {
       padding: "12px 8px",
       verticalAlign: "middle",
       fontSize: "2.1125rem",
-      minWidth:'7vw',
+      minWidth:'10vw',
   
       color:'white',
     },
