@@ -86,8 +86,8 @@ export default function CustomTable(props) {
     const predictMatch = async () => {
       if (predict === -1) {
 
-
-        if (Number(allowPredict?.diff.split(":")[0]) > 15) {
+        console.log(Number(allowPredict?.diff.split(":")[0]))
+        if (Number(allowPredict?.diff.split(":")[0]) >= 15) {
           allowPredict?.time.setMilliseconds(0);
           var minutes = allowPredict?.time.getMinutes() + 10;
           allowPredict?.time.setSeconds(0);
@@ -184,7 +184,7 @@ export default function CustomTable(props) {
     const predictMatch = async () => {
       if (predict10 === -1 && predictAt === 0) {
 
-        if (Number(allowPredict?.diff.split(":")[0]) > 10) {
+        if (Number(allowPredict?.diff.split(":")[0]) >= 10) {
           allowPredict?.time.setMilliseconds(0);
           var minutes = allowPredict?.time.getMinutes() + 10;
           allowPredict?.time.setSeconds(0);
