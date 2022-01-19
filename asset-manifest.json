@@ -1,26 +1,26 @@
 {
   "files": {
     "main.css": "/lol-predict-app-frontend/static/css/main.34630f3b.chunk.css",
-    "main.js": "/lol-predict-app-frontend/static/js/main.f039f2ba.chunk.js",
-    "main.js.map": "/lol-predict-app-frontend/static/js/main.f039f2ba.chunk.js.map",
+    "main.js": "/lol-predict-app-frontend/static/js/main.87c8cbae.chunk.js",
+    "main.js.map": "/lol-predict-app-frontend/static/js/main.87c8cbae.chunk.js.map",
     "runtime-main.js": "/lol-predict-app-frontend/static/js/runtime-main.54989b72.js",
     "runtime-main.js.map": "/lol-predict-app-frontend/static/js/runtime-main.54989b72.js.map",
     "static/css/2.e8b3d208.chunk.css": "/lol-predict-app-frontend/static/css/2.e8b3d208.chunk.css",
-    "static/js/2.e28fddde.chunk.js": "/lol-predict-app-frontend/static/js/2.e28fddde.chunk.js",
-    "static/js/2.e28fddde.chunk.js.map": "/lol-predict-app-frontend/static/js/2.e28fddde.chunk.js.map",
+    "static/js/2.1e66b570.chunk.js": "/lol-predict-app-frontend/static/js/2.1e66b570.chunk.js",
+    "static/js/2.1e66b570.chunk.js.map": "/lol-predict-app-frontend/static/js/2.1e66b570.chunk.js.map",
     "static/js/3.58aa5f22.chunk.js": "/lol-predict-app-frontend/static/js/3.58aa5f22.chunk.js",
     "static/js/3.58aa5f22.chunk.js.map": "/lol-predict-app-frontend/static/js/3.58aa5f22.chunk.js.map",
     "index.html": "/lol-predict-app-frontend/index.html",
     "static/css/2.e8b3d208.chunk.css.map": "/lol-predict-app-frontend/static/css/2.e8b3d208.chunk.css.map",
     "static/css/main.34630f3b.chunk.css.map": "/lol-predict-app-frontend/static/css/main.34630f3b.chunk.css.map",
-    "static/js/2.e28fddde.chunk.js.LICENSE.txt": "/lol-predict-app-frontend/static/js/2.e28fddde.chunk.js.LICENSE.txt",
+    "static/js/2.1e66b570.chunk.js.LICENSE.txt": "/lol-predict-app-frontend/static/js/2.1e66b570.chunk.js.LICENSE.txt",
     "static/media/background.0846ab06.png": "/lol-predict-app-frontend/static/media/background.0846ab06.png"
   },
   "entrypoints": [
     "static/js/runtime-main.54989b72.js",
     "static/css/2.e8b3d208.chunk.css",
-    "static/js/2.e28fddde.chunk.js",
+    "static/js/2.1e66b570.chunk.js",
     "static/css/main.34630f3b.chunk.css",
-    "static/js/main.f039f2ba.chunk.js"
+    "static/js/main.87c8cbae.chunk.js"
   ]
 }
